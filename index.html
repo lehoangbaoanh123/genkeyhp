@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trình Tạo Key 32 Ký Tự - Theo Tên</title>
+  <meta name="description" content="Website tạo 1 key 32 ký tự theo tên với animation cực đẹp và âm thanh công nghệ. Chuẩn 100% logic thuật toán Python.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Dynamic Interactive Particle Canvas & Ambient Aura -->
+  <canvas id="bgCanvas"></canvas>
+  <div class="mesh-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="hero-header">
+      <div class="pill-badge">
+        <span class="sparkle-icon">✨</span>
+        <span>CHUẨN 100% THUẬT TOÁN • 32 KÝ TỰ</span>
+      </div>
+      <h1 class="hero-title">Tạo Key Theo Tên</h1>
+      <p class="hero-desc">
+        Nhập tên bất kỳ, hệ thống sẽ tự động ghép thêm đuôi ngẫu nhiên để tạo thành <strong>1 key 32 ký tự</strong> độc nhất.
+      </p>
+    </header>
+
+    <!-- Main Interactive Card -->
+    <main class="main-stage">
+      <div class="card-3d-wrapper" id="cardWrapper">
+        <div class="holo-card" id="holoCard">
+          <div class="card-glow-border"></div>
+
+          <!-- Input Block -->
+          <div class="input-section">
+            <div class="input-header">
+              <label for="nameInput" class="input-label">Tên của bạn hoặc tiền tố mong muốn:</label>
+              <span id="charCount" class="char-pill">13 / 32</span>
+            </div>
+
+            <div class="input-box">
+              <span class="input-lead-icon">🏷️</span>
+              <input 
+                type="text" 
+                id="nameInput" 
+                placeholder="Ví dụ: rasellinkedin, ngovannhat, tris..." 
+                value="rasellinkedin"
+                autocomplete="off"
+                spellcheck="false"
+                maxlength="31"
+              />
+              <button type="button" id="clearBtn" class="btn-clear" title="Xóa tên">✕</button>
+            </div>
+            
+            <p id="lengthWarning" class="warning-text hidden">
+              ⚠️ Tên tối đa 31 ký tự để chừa ít nhất 1 ký tự ngẫu nhiên cho đủ 32 ký tự.
+            </p>
+          </div>
+
+          <!-- Action Button with Sound & Animation -->
+          <button type="button" id="genBtn" class="neon-btn" onclick="triggerGenerateKey()">
+            <span class="btn-glow-layer"></span>
+            <span class="btn-text">
+              <span class="btn-icon">⚡</span>
+              <span id="btnLabel">Tạo Key Ngay</span>
+            </span>
+          </button>
+
+          <!-- Divider -->
+          <div class="card-divider">
+            <span class="divider-line"></span>
+            <span class="divider-text">KẾT QUẢ KEY 32 KÝ TỰ</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <!-- Key Result Hologram Screen -->
+          <div class="key-screen" id="keyScreen">
+            <div class="screen-header">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="screen-tag" id="statusTag">Sẵn sàng tạo</span>
+            </div>
+
+            <!-- The Scrambler / Key Display -->
+            <div class="key-display-area" id="keyDisplayArea" onclick="copyCurrentKey()" title="Bấm để sao chép nhanh">
+              <div id="keyTextWrapper" class="key-text-wrapper">
+                <span id="prefixSpan" class="part-prefix">rasellinkedin</span><span id="suffixSpan" class="part-suffix">4v9m2x7k0lp81q3z8a2</span>
+              </div>
+            </div>
+
+            <!-- Length breakdown badges -->
+            <div class="meta-breakdown">
+              <div class="meta-item">
+                <span class="meta-dot dot-prefix"></span>
+                <span class="meta-name">Tên (Prefix):</span>
+                <strong id="metaPrefixLen">13 ký tự</strong>
+              </div>
+              <span class="meta-plus">+</span>
+              <div class="meta-item">
+                <span class="meta-dot dot-suffix"></span>
+                <span class="meta-name">Đuôi [a-z0-9]:</span>
+                <strong id="metaSuffixLen">19 ký tự</strong>
+              </div>
+              <span class="meta-equal">=</span>
+              <div class="meta-item">
+                <span class="meta-name">Tổng:</span>
+                <strong class="text-glow">32 ký tự</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Button Row: Copy & Regenerate -->
+          <div class="actions-row">
+            <button type="button" id="copyBtn" class="btn-secondary btn-copy" onclick="copyCurrentKey()">
+              <span id="copyIcon">📋</span>
+              <span id="copyText">Sao Chép Key</span>
+            </button>
+            <button type="button" id="regenBtn" class="btn-secondary btn-regen" onclick="triggerGenerateKey()">
+              <span>🔄</span>
+              <span>Đổi Đuôi Khác</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Toast Notification -->
+    <div id="toast" class="toast-bubble"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
